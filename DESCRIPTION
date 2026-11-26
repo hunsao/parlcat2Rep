@@ -1,0 +1,36 @@
+Package: parlcat2Rep
+Title: Access the Speech Corpus of the Parliament of Catalonia (1932-1938)
+Version: 0.0.0.9000
+Authors@R: c(
+    person("Toni", "Rodon", role = "aut"),
+    person("David", "Carbonell", email = "maintainer@example.org",
+           role = c("aut", "cre"),
+           comment = "TODO: replace placeholder e-mail before release")
+    )
+Description: Programmatic access to 'Voices of the Republic', the corpus of
+    plenary speeches of the Parliament of Catalonia during the Spanish Second
+    Republic (1932-1938). Includes speaker, party and office metadata, the
+    reference tables used to build them, government/opposition helpers,
+    text search, keyword-in-context and trend utilities, and conversion to
+    'quanteda' and 'tidytext' objects.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Depends:
+    R (>= 4.1.0)
+Imports:
+    cli,
+    ggplot2,
+    rlang,
+    stats,
+    stringi,
+    tibble,
+    tools,
+    utils
+Suggests:
+    quanteda,
+    testthat (>= 3.0.0),
+    tidytext,
+    withr
+Config/testthat/edition: 3
