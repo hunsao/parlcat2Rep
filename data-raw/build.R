@@ -31,11 +31,15 @@ sp$paraules <- stringi::stri_count_regex(sp$text, "\\S+")
 sp$mes <- format(sp$data, "%Y-%m")
 
 # --- reference tables ---------------------------------------------------------
+# Multi-value columns use "|" with no spaces (partits.anys_amb_diputats,
+# partits.anys_al_govern, partits_per_any.governs, diputats.claus_orador,
+# governs.partits, carrecs.variants_capcalera).
 ref <- list(
   mps             = read_release("DADES", "diputats.csv"),
   parties         = read_release("DADES", "partits.csv"),
   parties_by_year = read_release("DADES", "partits_per_any.csv"),
   governments     = read_release("DADES", "governs.csv"),
+  ministers       = read_release("DADES", "governs_consellers.csv"),
   offices         = read_release("DADES", "carrecs.csv"),
   party_changes   = read_release("DADES", "canvis_partit.csv"),
   chairs          = read_release("DADES", "presidencia_sessions.csv"),
@@ -48,6 +52,12 @@ for (nm in c("governments", "offices")) {
   ref[[nm]]$data_fi    <- as.Date(ref[[nm]]$data_fi)
 }
 ref$party_changes$data_inici <- as.Date(ref$party_changes$data_inici)
+stopifnot(
+  nrow(ref$ministers) == 124L,
+  all(ref$ministers$govern %in% ref$governments$govern),
+  "variants_capcalera" %in% names(ref$offices),
+  !"consellers_per_partit" %in% names(ref$governments)
+)
 
 # --- derived columns ----------------------------------------------------------
 gov <- ref$governments

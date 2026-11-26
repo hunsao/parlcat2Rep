@@ -35,7 +35,7 @@ parl_download(quiet = TRUE)
 | `party` | sigles de `party_data` | tots |
 | `session` | identificadors de sessió | totes |
 | `side` | `"all"`, `"government"`, `"opposition"` | `"all"` |
-| `office` | `TRUE`, `FALSE` o noms de càrrec | sense filtre |
+| `office` | `TRUE`, `FALSE`, capçaleres o etiquetes de `parl_offices()` | sense filtre |
 | `spoken_only` | treu les lectures del secretari i les capçaleres anònimes | `TRUE` |
 | `include_chair` | manté les intervencions fetes presidint la sessió | `TRUE` |
 | `include_doubtful` | manté les intervencions marcades a `assignacio_dubtosa` | `TRUE` |
@@ -78,7 +78,8 @@ parl_governments()[, c("govern", "data_inici", "data_fi", "partits")]
 | `parl_parties()` | Sigles, noms i notes dels partits. |
 | `parl_parties_by_year()` | Diputats i participació al govern per any i partit. |
 | `parl_governments()` | Governs de la Generalitat i els seus partits. |
-| `parl_offices()` | Titulars dels càrrecs que parlen al *Diari*. |
+| `parl_ministers()` | Consellers de cada govern, una fila per conseller. |
+| `parl_offices()` | Titulars dels càrrecs que parlen al *Diari*, amb una etiqueta harmonitzada (`carrec`) i les formes de capçalera (`variants_capcalera`). |
 | `parl_party_changes()` | Canvis de partit amb data (PNRE, PSUC). |
 | `parl_chairs()` | Qui presideix cada sessió i des de quina intervenció. |
 | `parl_aliases()` | Capçaleres resoltes a mà (grafies, homònims, errors d'OCR). |

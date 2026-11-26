@@ -38,7 +38,10 @@ accent-insensitive substring of \code{nom_sencer}.}
 
 \item{office}{\code{NULL} (default, no filter), \code{TRUE} (only speeches delivered
 in an office), \code{FALSE} (only speeches delivered as an MP) or a character
-vector of offices (\code{carrec}).}
+vector of offices: either headings as they appear in the \code{carrec} column
+(e.g. \code{"CONSELLER DE CULTURA"}) or harmonised labels from the \code{carrec}
+column of \code{\link[=parl_offices]{parl_offices()}} (e.g. \code{"Conseller de Cultura"}), which match
+all their heading variants.}
 
 \item{spoken_only}{Logical. If \code{TRUE} (default), drop readings by the
 secretary and anonymous headings, which are not speeches by a person.}

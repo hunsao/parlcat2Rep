@@ -6,7 +6,18 @@
 \alias{parlcat2Rep-package}
 \title{parlcat2Rep: Access the Speech Corpus of the Parliament of Catalonia (1932-1938)}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Programmatic access to 'Voices of the Republic', the corpus of plenary speeches of the Parliament of Catalonia during the Spanish Second Republic (1932-1938). Includes speaker, party and office metadata, the reference tables used to build them, government/opposition helpers, text search, keyword-in-context and trend utilities, and conversion to 'quanteda' and 'tidytext' objects.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://hunsao.github.io/parlcat2Rep/}
+  \item \url{https://github.com/hunsao/parlcat2Rep}
+  \item Report bugs at \url{https://github.com/hunsao/parlcat2Rep/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: David Carbonell \email{maintainer@example.org} (TODO: replace placeholder e-mail before release)

@@ -6,6 +6,7 @@
 \alias{parl_parties}
 \alias{parl_parties_by_year}
 \alias{parl_governments}
+\alias{parl_ministers}
 \alias{parl_offices}
 \alias{parl_party_changes}
 \alias{parl_chairs}
@@ -20,6 +21,8 @@ parl_parties()
 parl_parties_by_year()
 
 parl_governments()
+
+parl_ministers()
 
 parl_offices()
 
@@ -48,8 +51,19 @@ codebook.
 (\code{partits_per_any.csv}).
 \item \code{parl_governments()}: governments of the Generalitat and their parties
 (\code{governs.csv}).
+\item \code{parl_ministers()}: the ministers (\emph{consellers}) of each government, one
+row per minister and government (\code{governs_consellers.csv}). \code{nom_sencer}
+is filled only for people who appear in the corpus.
 \item \code{parl_offices()}: holders of the offices that speak in the \emph{Diari}
-(\code{carrecs.csv}).
+(\code{carrecs.csv}). \code{carrec} is a harmonised label; \code{variants_capcalera}
+holds the heading forms matched against the \code{carrec} column of
+\code{\link[=parl_speeches]{parl_speeches()}}.
+}
+
+Columns with several values (\code{partits}, \code{anys_amb_diputats},
+\code{anys_al_govern}, \code{governs}, \code{claus_orador}, \code{variants_capcalera}) separate
+them with \code{"|"}.
+\itemize{
 \item \code{parl_party_changes()}: dated party changes (\code{canvis_partit.csv}).
 \item \code{parl_chairs()}: who chairs each session and from which speech
 (\code{presidencia_sessions.csv}).

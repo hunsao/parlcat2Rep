@@ -59,3 +59,21 @@ test_that("government side is derived from governs.csv", {
                                       party_data = c("LR", "ERC")))
   expect_identical(x$es_govern, c(FALSE, NA))
 })
+
+test_that("reference tables follow the new DADES schema", {
+  m <- parl_ministers()
+  expect_equal(nrow(m), 124L)
+  expect_true(all(m$govern %in% parl_governments()$govern))
+  expect_false("consellers_per_partit" %in% names(parl_governments()))
+  expect_true("variants_capcalera" %in% names(parl_offices()))
+  expect_false(any(grepl(" ", parl_parties()$anys_amb_diputats)))
+  expect_false(any(grepl(";", parl_parties_by_year()$governs)))
+})
+
+test_that("office accepts harmonised labels and heading variants", {
+  a <- parl_speeches(office = "Conseller de Treball", text = FALSE)
+  b <- parl_speeches(office = c("CONSELLER DE TREBALL", "CONSELLER DEL TREBALL",
+                                "CONSELLER DE TREBALL SENYORS DIPUTATS"), text = FALSE)
+  expect_gt(nrow(a), 0)
+  expect_equal(nrow(a), nrow(b))
+})

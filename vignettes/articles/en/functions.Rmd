@@ -35,7 +35,7 @@ parl_download(quiet = TRUE)
 | `party` | acronyms of `party_data` | all |
 | `session` | session identifiers | all |
 | `side` | `"all"`, `"government"`, `"opposition"` | `"all"` |
-| `office` | `TRUE`, `FALSE` or office names | no filter |
+| `office` | `TRUE`, `FALSE`, headings or labels from `parl_offices()` | no filter |
 | `spoken_only` | drop readings by the secretary and anonymous headings | `TRUE` |
 | `include_chair` | keep speeches made while chairing the session | `TRUE` |
 | `include_doubtful` | keep speeches flagged in `assignacio_dubtosa` | `TRUE` |
@@ -78,7 +78,8 @@ parl_governments()[, c("govern", "data_inici", "data_fi", "partits")]
 | `parl_parties()` | Party acronyms, names and notes. |
 | `parl_parties_by_year()` | MPs and government status per year and party. |
 | `parl_governments()` | Governments of the Generalitat and their parties. |
-| `parl_offices()` | Holders of the offices that speak in the *Diari*. |
+| `parl_ministers()` | Ministers (*consellers*) of each government, one row per minister. |
+| `parl_offices()` | Holders of the offices that speak in the *Diari*, with a harmonised label (`carrec`) and the heading forms (`variants_capcalera`). |
 | `parl_party_changes()` | Dated party changes (PNRE, PSUC). |
 | `parl_chairs()` | Who chairs each session, from which speech. |
 | `parl_aliases()` | Headings resolved by hand (spellings, homonyms, OCR errors). |

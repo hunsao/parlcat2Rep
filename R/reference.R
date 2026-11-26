@@ -11,8 +11,17 @@
 #'   (`partits_per_any.csv`).
 #' - `parl_governments()`: governments of the Generalitat and their parties
 #'   (`governs.csv`).
+#' - `parl_ministers()`: the ministers (*consellers*) of each government, one
+#'   row per minister and government (`governs_consellers.csv`). `nom_sencer`
+#'   is filled only for people who appear in the corpus.
 #' - `parl_offices()`: holders of the offices that speak in the *Diari*
-#'   (`carrecs.csv`).
+#'   (`carrecs.csv`). `carrec` is a harmonised label; `variants_capcalera`
+#'   holds the heading forms matched against the `carrec` column of
+#'   [parl_speeches()].
+#'
+#' Columns with several values (`partits`, `anys_amb_diputats`,
+#' `anys_al_govern`, `governs`, `claus_orador`, `variants_capcalera`) separate
+#' them with `"|"`.
 #' - `parl_party_changes()`: dated party changes (`canvis_partit.csv`).
 #' - `parl_chairs()`: who chairs each session and from which speech
 #'   (`presidencia_sessions.csv`).
@@ -42,6 +51,10 @@ parl_parties_by_year <- function() parl_ref$parties_by_year
 #' @rdname parl_reference
 #' @export
 parl_governments <- function() parl_ref$governments
+
+#' @rdname parl_reference
+#' @export
+parl_ministers <- function() parl_ref$ministers
 
 #' @rdname parl_reference
 #' @export

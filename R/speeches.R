@@ -24,7 +24,10 @@
 #'   `es_govern`.
 #' @param office `NULL` (default, no filter), `TRUE` (only speeches delivered
 #'   in an office), `FALSE` (only speeches delivered as an MP) or a character
-#'   vector of offices (`carrec`).
+#'   vector of offices: either headings as they appear in the `carrec` column
+#'   (e.g. `"CONSELLER DE CULTURA"`) or harmonised labels from the `carrec`
+#'   column of [parl_offices()] (e.g. `"Conseller de Cultura"`), which match
+#'   all their heading variants.
 #' @param spoken_only Logical. If `TRUE` (default), drop readings by the
 #'   secretary and anonymous headings, which are not speeches by a person.
 #' @param include_chair Logical. If `FALSE`, drop speeches delivered while
@@ -75,7 +78,7 @@ parl_speeches <- function(year = NULL, from = NULL, to = NULL, person = NULL,
     } else if (isFALSE(office)) {
       keep <- keep & is.na(d$carrec)
     } else {
-      keep <- keep & d$carrec %in% office
+      keep <- keep & d$carrec %in% parl_office_headings(office)
     }
   }
   if (spoken_only) keep <- keep & !d$resolucio %in% c("secretari_lectura", "anonim")
@@ -159,4 +162,12 @@ parl_resolve_person <- function(person) {
     }
   }
   unique(out)
+}
+
+# Expands harmonised office labels (parl_offices()$carrec) into the heading
+# variants used in the speeches; other values are kept as given.
+parl_office_headings <- function(office) {
+  off <- parl_ref$offices
+  hit <- off$carrec %in% office
+  unique(c(office, unlist(strsplit(off$variants_capcalera[hit], "|", fixed = TRUE))))
 }
