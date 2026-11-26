@@ -1,0 +1,16 @@
+pandoc: '3.8'
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  articles/en/contact: en/contact.html
+  articles/ca/contacte: ca/contacte.html
+  articles/ca/funcions: ca/funcions.html
+  articles/en/functions: en/functions.html
+  articles/ca/introduccio: ca/introduccio.html
+  articles/en/introduction: en/introduction.html
+  articles/en/methodology: en/methodology.html
+  articles/ca/metodologia: ca/metodologia.html
+last_built: 2026-11-26T15:13Z
+urls:
+  reference: https://hunsao.github.io/parlcat2Rep/reference
+  article: https://hunsao.github.io/parlcat2Rep/articles
