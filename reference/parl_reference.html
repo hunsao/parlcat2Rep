@@ -69,6 +69,8 @@ codebook.</p>
 <span></span>
 <span><span class="fu">parl_governments</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">parl_ministers</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">parl_offices</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">parl_party_changes</span><span class="op">(</span><span class="op">)</span></span>
@@ -93,9 +95,16 @@ codebook.</p>
 (<code>partits_per_any.csv</code>).</p></li>
 <li><p><code>parl_governments()</code>: governments of the Generalitat and their parties
 (<code>governs.csv</code>).</p></li>
+<li><p><code>parl_ministers()</code>: the ministers (<em>consellers</em>) of each government, one
+row per minister and government (<code>governs_consellers.csv</code>). <code>nom_sencer</code>
+is filled only for people who appear in the corpus.</p></li>
 <li><p><code>parl_offices()</code>: holders of the offices that speak in the <em>Diari</em>
-(<code>carrecs.csv</code>).</p></li>
-<li><p><code>parl_party_changes()</code>: dated party changes (<code>canvis_partit.csv</code>).</p></li>
+(<code>carrecs.csv</code>). <code>carrec</code> is a harmonised label; <code>variants_capcalera</code>
+holds the heading forms matched against the <code>carrec</code> column of
+<code><a href="parl_speeches.html">parl_speeches()</a></code>.</p></li>
+</ul><p>Columns with several values (<code>partits</code>, <code>anys_amb_diputats</code>,
+<code>anys_al_govern</code>, <code>governs</code>, <code>claus_orador</code>, <code>variants_capcalera</code>) separate
+them with <code>"|"</code>.</p><ul><li><p><code>parl_party_changes()</code>: dated party changes (<code>canvis_partit.csv</code>).</p></li>
 <li><p><code>parl_chairs()</code>: who chairs each session and from which speech
 (<code>presidencia_sessions.csv</code>).</p></li>
 <li><p><code>parl_aliases()</code>: speaker headings resolved by hand (<code>alias_oradors.csv</code>).</p></li>
@@ -106,25 +115,24 @@ codebook.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">parl_governments</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    govern    data_inici data_fi    president partits consellers_per_partit font </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1932-12 … 1932-12-19 1933-01-23 Francesc… ERC     ERC: Lluhí (cap del … Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1933-01 … 1933-01-24 1933-10-03 Francesc… ERC     ERC: Pi i Sunyer (co… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1933-10 … 1933-10-04 1934-01-02 Francesc… ERC     ERC: Santaló (primer… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1934-01 … 1934-01-03 1934-10-13 Lluís Co… ERC|PN… ERC: Dencàs; Gassol;… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Suspensió 1934-10-14 1936-02-29 <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>                    Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 1936-03 … 1936-03-01 1936-05-25 Lluís Co… ERC|PN… ERC: Espanya; Gassol… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 1936-05 … 1936-05-26 1936-07-30 Lluís Co… ERC|AC… ERC: Espanya; Gassol… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 1936-07 … 1936-07-31 1936-08-05 Lluís Co… ERC|AC… ERC: Casanovas (prim… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 1936-08 … 1936-08-06 1936-09-25 Lluís Co… ERC|AC… ERC: Casanovas (prim… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 1936-09 … 1936-09-26 1936-12-16 Lluís Co… ERC|CN… ERC: Tarradellas (pr… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> 1936-12 … 1936-12-17 1937-04-02 Lluís Co… ERC|CN… ERC: Tarradellas; Ai… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> 1937-04 … 1937-04-03 1937-04-15 Lluís Co… ERC|CN… ERC: Tarradellas; Ai… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> 1937-04 … 1937-04-16 1937-05-04 Lluís Co… ERC|CN… ERC: Tarradellas; Ai… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> 1937-05 … 1937-05-05 1937-06-28 Lluís Co… ERC|CN… ERC: Martí Feced · C… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> 1937-06 … 1937-06-29 1939-02-28 Lluís Co… ERC|PS… ERC: Tarradellas; Sb… Viqu…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: nota &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    govern                    data_inici data_fi    president partits font  nota </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1932-12 Macià I           1932-12-19 1933-01-23 Francesc… ERC     Viqu… Gove…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1933-01 Macià II          1933-01-24 1933-10-03 Francesc… ERC     Viqu… Gove…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1933-10 Macià III         1933-10-04 1934-01-02 Francesc… ERC     Viqu… Maci…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1934-01 Companys I        1934-01-03 1934-10-13 Lluís Co… ERC|PN… Viqu… La t…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Suspensió                 1934-10-14 1936-02-29 <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      Viqu… Gove…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 1936-03 Companys (restit… 1936-03-01 1936-05-25 Lluís Co… ERC|PN… Viqu… Lluh…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 1936-05 Companys          1936-05-26 1936-07-30 Lluís Co… ERC|AC… Viqu… Surt…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 1936-07 Casanovas         1936-07-31 1936-08-05 Lluís Co… ERC|AC… Viqu… Prim…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 1936-08 Casanovas         1936-08-06 1936-09-25 Lluís Co… ERC|AC… Viqu… Surt…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 1936-09 Tarradellas I     1936-09-26 1936-12-16 Lluís Co… ERC|CN… Viqu… Entr…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> 1936-12 Tarradellas II    1936-12-17 1937-04-02 Lluís Co… ERC|CN… Viqu… Surt…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> 1937-04 Tarradellas III   1937-04-03 1937-04-15 Lluís Co… ERC|CN… Viqu… La V…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> 1937-04 Tarradellas IV    1937-04-16 1937-05-04 Lluís Co… ERC|CN… Viqu… Como…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> 1937-05 provisional       1937-05-05 1937-06-28 Lluís Co… ERC|CN… Viqu… Gove…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> 1937-06 Tarradellas V     1937-06-29 1939-02-28 Lluís Co… ERC|PS… Viqu… Surt…</span>
 <span class="r-in"><span><span class="fu">parl_mps</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 83 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    id     nom_sencer cognoms nom   party circumscripcio claus_orador font  nota </span>

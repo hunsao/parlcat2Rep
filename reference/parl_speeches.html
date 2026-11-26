@@ -124,7 +124,10 @@ accent-insensitive substring of <code>nom_sencer</code>.</p></dd>
 <dt id="arg-office">office<a class="anchor" aria-label="anchor" href="#arg-office"></a></dt>
 <dd><p><code>NULL</code> (default, no filter), <code>TRUE</code> (only speeches delivered
 in an office), <code>FALSE</code> (only speeches delivered as an MP) or a character
-vector of offices (<code>carrec</code>).</p></dd>
+vector of offices: either headings as they appear in the <code>carrec</code> column
+(e.g. <code>"CONSELLER DE CULTURA"</code>) or harmonised labels from the <code>carrec</code>
+column of <code><a href="parl_reference.html">parl_offices()</a></code> (e.g. <code>"Conseller de Cultura"</code>), which match
+all their heading variants.</p></dd>
 
 
 <dt id="arg-spoken-only">spoken_only<a class="anchor" aria-label="anchor" href="#arg-spoken-only"></a></dt>
