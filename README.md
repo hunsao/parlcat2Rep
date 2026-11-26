@@ -1,4 +1,4 @@
-# parlcat2Rep
+# parlcat2Rep <img src="man/figures/logo.png" align="right" height="139" alt="parlcat2Rep hex logo" />
 
 > **Development version.** Citation, licence of the data and maintainer details are drafts.
 
