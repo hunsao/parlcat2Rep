@@ -1,0 +1,81 @@
+---
+title: "Metodologia, fonts i advertiments"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(parlcat2Rep)
+```
+
+## Com s'ha construït el corpus
+
+1. **Text.** Els 260 PDF del *Diari de Sessions* (5.868 pàgines) s'han passat
+   per OCR amb un model de visió-llenguatge (OvisOCR2) i se n'han netejat els
+   errors coneguts.
+2. **Intervencions.** Cada capçalera d'orador obre una intervenció nova. Hi ha
+   capçaleres amb nom («El Sr. LLUHÍ:»), amb càrrec («El Sr. CONSELLER DE
+   CULTURA:») i anònimes («Un Sr. DIPUTAT:»).
+3. **Persona.** Regles, en aquest ordre: les capçaleres anònimes no tenen
+   persona; «El Sr. PRESIDENT:» és qui presidia la sessió en aquell moment; les
+   lectures del secretari no tenen persona; els càrrecs es resolen amb el
+   titular d'aquella data; els cognoms ambigus es resolen amb l'acotació del
+   *Diari*; els àlies cobreixen grafies de l'època, homònims i errors d'OCR; la
+   resta es resol per cognom (exacte o, si l'OCR l'ha deformat, per semblança).
+4. **Partit.** `party` és la candidatura del 1932; `party_data` és el partit a
+   la data, i té en compte ERC → PNRE (10 d'octubre de 1933, i tornada a ERC el
+   maig de 1936) i USC → PSUC (31 de juliol de 1936).
+5. **Revisió humana.** Tots els casos on les fonts discrepen o l'assignació no
+   és directa s'han decidit un per un (`parl_review_cases()`).
+
+## Fonts
+
+Per ordre de prioritat quan discrepen:
+
+1. el mateix *Diari de Sessions*;
+2. el *Resum de deliberacions 1932–1934*, volum oficial del Parlament;
+3. la *Relació de diputats 1932–1938*, fullet del Parlament
+   (<https://www.parlament.cat/document/intrade/203240>);
+4. la Viquipèdia, sobretot per al 1936–1938.
+
+## Abans de comptar
+
+Aquestes decisions canvien els resultats. Preneu-les explícitament.
+
+**Partit a la data, no partit de la candidatura.** Feu servir `party_data`.
+Lluhí, Selves, Casanelles, Tarradellas i Xirau hi consten com a PNRE entre
+l'octubre de 1933 i el maig de 1936.
+
+**Presidir la sessió.** Les intervencions d'«El Sr. PRESIDENT» són sobretot de
+procediment, i pesen molt al corpus:
+
+```{r}
+d <- parl_speeches(text = FALSE)
+round(100 * mean(d$resolucio == "presidencia_sessio"), 1)
+```
+
+Per analitzar què diu la gent, feu servir `include_chair = FALSE`.
+
+**Lectures del secretari i capçaleres anònimes.** Queden fora per defecte
+(`spoken_only = TRUE`). Les lectures són documents llegits en veu alta, no
+discursos del secretari; les capçaleres anònimes no tenen persona.
+
+**Atribucions dubtoses.** `assignacio_dubtosa` marca 304 intervencions: 201
+lectures del secretari, 102 intervencions anònimes de «la Majoria» (una
+coalició encapçalada per ERC, assignada a ERC) i una capçalera sense resoldre.
+Amb `include_doubtful = FALSE` queden fora.
+
+**Govern i oposició.** `es_govern` és `NA` abans del primer govern estatutari
+(19 de desembre de 1932), durant la suspensió i quan la intervenció no té
+partit.
+
+```{r}
+table(d$es_govern, useNA = "ifany")
+```
+
+**Cobertura desigual.** El 1933 té moltes més intervencions que qualsevol altre
+any, i el 1937 i el 1938 gairebé no hi ha sessions. Per comparar períodes,
+feu servir taxes (`parl_trend()`) en lloc de recomptes bruts.
+
+**OCR.** El text surt d'un OCR. Les cerques ignoren accents i majúscules per
+defecte, però hi queden grafies de l'època (per exemple, *Tarradelles*) i errors
+d'OCR residuals.

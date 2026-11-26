@@ -1,0 +1,15 @@
+---
+title: "Problemes i suggeriments"
+---
+
+Si trobeu un error a les dades (una intervenció atribuïda a qui no toca, un
+partit o un càrrec equivocat, un error d'OCR que afecta una cerca) o al
+paquet, o si voleu proposar una funcionalitat nova, obriu una incidència a:
+
+<https://github.com/hunsao/parlcat2Rep/issues>
+
+Si es tracta d'un error de dades, indiqueu-hi la sessió (`sessio`), la posició
+de la intervenció (`ordre`) i, si pot ser, la pàgina del PDF (`pagina`).
+
+El registre complet dels casos dubtosos ja revisats, amb la decisió presa en
+cada un, es pot consultar amb `parl_review_cases()`.

@@ -1,0 +1,113 @@
+url: https://hunsao.github.io/parlcat2Rep/
+
+template:
+  bootstrap: 5
+  bslib:
+    bg: "#fbf7ee"
+    fg: "#2a1a14"
+    primary: "#7a1c1c"
+    secondary: "#c58a12"
+    base_font: {google: "Source Serif 4"}
+    heading_font: {google: "Source Serif 4"}
+    code_font: {google: "IBM Plex Mono"}
+
+home:
+  title: "parlcat2Rep: speeches of the Parliament of Catalonia (1932-1938)"
+  description: >
+    R access to Voices of the Republic, the speech corpus of the Parliament of
+    Catalonia during the Spanish Second Republic.
+  sidebar:
+    structure: [links, license, citation, authors, dev]
+
+authors:
+  Toni Rodon:
+    href: https://www.tonirodon.cat
+  David Carbonell:
+    href: https://hunsao.github.io/portfolio/
+
+navbar:
+  structure:
+    left: [english, catala, reference, news]
+    right: [search, github]
+  components:
+    english:
+      text: English
+      menu:
+      - text: Introduction
+        href: articles/en/introduction.html
+      - text: Guide to functions and data
+        href: articles/en/functions.html
+      - text: Methodology, sources and warnings
+        href: articles/en/methodology.html
+      - text: Problems and suggestions
+        href: articles/en/contact.html
+    catala:
+      text: Català
+      menu:
+      - text: Introducció
+        href: articles/ca/introduccio.html
+      - text: Guia de funcions i dades
+        href: articles/ca/funcions.html
+      - text: Metodologia, fonts i advertiments
+        href: articles/ca/metodologia.html
+      - text: Problemes i suggeriments
+        href: articles/ca/contacte.html
+    github:
+      icon: fa-github
+      href: https://github.com/hunsao/parlcat2Rep
+      aria-label: GitHub
+
+articles:
+- title: English
+  navbar: ~
+  contents:
+  - "articles/en/introduction"
+  - "articles/en/functions"
+  - "articles/en/methodology"
+  - "articles/en/contact"
+- title: Català
+  navbar: ~
+  contents:
+  - "articles/ca/introduccio"
+  - "articles/ca/funcions"
+  - "articles/ca/metodologia"
+  - "articles/ca/contacte"
+
+reference:
+- title: Speeches
+  desc: Load and filter speeches, sessions and speakers.
+  contents:
+  - parl_speeches
+  - parl_sessions
+  - parl_persons
+- title: Text
+  desc: Search, keyword in context and trends.
+  contents:
+  - parl_search
+  - parl_kwic
+  - parl_trend
+  - parl_plot_trend
+  - parl_as_corpus
+  - parl_tidy
+- title: Government and opposition
+  contents:
+  - parl_government_on
+  - parl_add_government
+- title: Reference tables
+  desc: Tables used to identify speakers and assign parties (bundled, no download needed).
+  contents:
+  - parl_reference
+- title: Data download and utilities
+  contents:
+  - parl_download
+  - parl_cache_dir
+  - parl_cache_clear
+  - parl_use_sample
+  - parl_metadata
+  - parl_party_colors
+- title: Package
+  contents:
+  - parlcat2Rep-package
+
+news:
+  cran_dates: false

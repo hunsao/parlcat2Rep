@@ -1,0 +1,105 @@
+---
+title: "Introducció"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 8, fig.height = 4)
+library(parlcat2Rep)
+parl_download(quiet = TRUE)
+```
+
+*Voices of the Republic* recull els debats del ple del Parlament de Catalunya
+durant la Segona República, des de la constitució el desembre de 1932 fins a
+l'última sessió l'octubre de 1938, separats en intervencions. **parlcat2Rep**
+els carrega a R amb la persona que parla, el seu partit a la data de la
+intervenció i el càrrec que ocupa.
+
+## Instal·lació
+
+```{r, eval = FALSE}
+# install.packages("pak")
+pak::pak("hunsao/parlcat2Rep")
+```
+
+Les metadades de les intervencions i les taules de referència ja vénen amb el
+paquet. El text de les intervencions (uns 6 MB) es baixa una sola vegada i es
+desa en una carpeta de memòria cau:
+
+```{r, eval = FALSE}
+library(parlcat2Rep)
+parl_download()
+```
+
+## Què hi ha al corpus
+
+```{r}
+meta <- parl_metadata()
+meta[c("n_speeches", "n_sessions", "n_words", "n_persons", "period")]
+```
+
+No hi ha sessions el 1935: el Parlament va estar suspès de l'octubre de 1934
+al febrer de 1936, i el 1937 i el 1938 gairebé no es va reunir.
+
+```{r}
+table(parl_sessions()$any)
+```
+
+## Carregar intervencions
+
+`parl_speeches()` retorna una fila per intervenció. Feu servir `text = FALSE`
+quan només calguin les metadades: és més ràpid i no necessita el text
+descarregat.
+
+```{r}
+lliga_1934 <- parl_speeches(year = 1934, party = "LR", text = FALSE)
+nrow(lliga_1934)
+head(lliga_1934[, c("data", "nom_sencer", "party_data", "paraules")])
+```
+
+Els filtres principals són `year`, `from` i `to`, `person`, `party`
+(`party_data`, el partit a la data), `session`, `side` (govern o oposició) i
+`office`.
+
+```{r}
+companys <- parl_speeches(person = "Lluís Companys", include_chair = FALSE)
+nrow(companys)
+substr(companys$text[1], 1, 200)
+```
+
+## Qui parla més
+
+`parl_persons()` dona una fila per orador. Els presidents del Parlament
+encapçalen el recompte brut perquè presidir una sessió genera moltes
+intervencions curtes; per això també hi ha els recomptes sense presidència.
+
+```{r}
+p <- parl_persons()
+head(p[order(-p$paraules_sense_presidencia),
+       c("nom_sencer", "party", "n_sense_presidencia", "paraules_sense_presidencia")], 8)
+```
+
+## Cercar al text
+
+```{r}
+rab <- parl_search("rabassaires", include_chair = FALSE)
+nrow(rab)
+table(rab$party_data)
+
+head(parl_kwic("rabassaires", window = 6)[, c("data", "nom_sencer", "pre", "match", "post")], 5)
+```
+
+## Tendències
+
+`parl_trend()` dona les aparicions per milió de paraules, perquè els mesos amb
+més debat no pesin més. La franja gris marca la suspensió del Parlament.
+
+```{r, fig.alt = "Taxa mensual de l expressio ordre public per milio de paraules, govern i oposicio, amb la suspensio 1934-1936 ombrejada"}
+parl_trend("ordre públic", group = "side", include_chair = FALSE) |>
+  parl_plot_trend()
+```
+
+## Següents passos
+
+- [Guia de funcions i dades](funcions.html): totes les funcions i taules.
+- [Metodologia, fonts i advertiments](metodologia.html): com s'ha construït el
+  corpus i què cal decidir abans de comptar.

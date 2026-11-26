@@ -1,0 +1,104 @@
+---
+title: "Introduction"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 8, fig.height = 4)
+library(parlcat2Rep)
+parl_download(quiet = TRUE)
+```
+
+*Voices of the Republic* contains the plenary debates of the Parliament of
+Catalonia during the Spanish Second Republic, from its constitution in
+December 1932 to its last session in October 1938, split into individual
+speeches. **parlcat2Rep** loads them into R, with the speaker, their party on
+the date of the speech and the office they hold.
+
+## Installation
+
+```{r, eval = FALSE}
+# install.packages("pak")
+pak::pak("hunsao/parlcat2Rep")
+```
+
+The speech metadata and the reference tables come with the package. The text
+of the speeches (about 6 MB) is downloaded once and kept in a cache folder:
+
+```{r, eval = FALSE}
+library(parlcat2Rep)
+parl_download()
+```
+
+## What is in the corpus
+
+```{r}
+meta <- parl_metadata()
+meta[c("n_speeches", "n_sessions", "n_words", "n_persons", "period")]
+```
+
+There are no sessions in 1935: the Parliament was suspended from October 1934
+to February 1936, and it barely met in 1937 and 1938.
+
+```{r}
+table(parl_sessions()$any)
+```
+
+## Loading speeches
+
+`parl_speeches()` returns one row per speech. Use `text = FALSE` when you only
+need the metadata: it is faster and works without the downloaded text.
+
+```{r}
+lliga_1934 <- parl_speeches(year = 1934, party = "LR", text = FALSE)
+nrow(lliga_1934)
+head(lliga_1934[, c("data", "nom_sencer", "party_data", "paraules")])
+```
+
+The main filters are `year`, `from` and `to`, `person`, `party`
+(`party_data`, the party on the date), `session`, `side` (government or
+opposition) and `office`.
+
+```{r}
+companys <- parl_speeches(person = "Lluís Companys", include_chair = FALSE)
+nrow(companys)
+substr(companys$text[1], 1, 200)
+```
+
+## Who speaks most
+
+`parl_persons()` gives one row per speaker. The Presidents of the Parliament
+lead the raw count because chairing a session produces many short speeches,
+so it also gives the counts without chairing.
+
+```{r}
+p <- parl_persons()
+head(p[order(-p$paraules_sense_presidencia),
+       c("nom_sencer", "party", "n_sense_presidencia", "paraules_sense_presidencia")], 8)
+```
+
+## Searching the text
+
+```{r}
+rab <- parl_search("rabassaires", include_chair = FALSE)
+nrow(rab)
+table(rab$party_data)
+
+head(parl_kwic("rabassaires", window = 6)[, c("data", "nom_sencer", "pre", "match", "post")], 5)
+```
+
+## Trends
+
+`parl_trend()` gives occurrences per million words spoken, so that months with
+more debate do not weigh more. The grey band marks the suspension of the
+Parliament.
+
+```{r, fig.alt = "Monthly rate of the phrase ordre public per million words, government versus opposition, with the 1934-1936 suspension shaded"}
+parl_trend("ordre públic", group = "side", include_chair = FALSE) |>
+  parl_plot_trend()
+```
+
+## Next steps
+
+- [Guide to functions and data](functions.html): every function and table.
+- [Methodology, sources and warnings](methodology.html): how the corpus was
+  built and what to decide before counting.

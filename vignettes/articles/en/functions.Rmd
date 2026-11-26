@@ -1,0 +1,91 @@
+---
+title: "Guide to functions and data"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(parlcat2Rep)
+parl_download(quiet = TRUE)
+```
+
+## Functions
+
+| Group | Function | What it does |
+|---|---|---|
+| Speeches | `parl_speeches()` | One row per speech, with filters. |
+| | `parl_sessions()` | One row per session: date, speeches, words, chair. |
+| | `parl_persons()` | One row per speaker, with counts with and without chairing. |
+| Text | `parl_search()` | Speeches containing a word, phrase or regular expression. |
+| | `parl_kwic()` | Each occurrence with its context. |
+| | `parl_trend()`, `parl_plot_trend()` | Occurrences per million words by month or year, by party or side. |
+| | `parl_as_corpus()`, `parl_tidy()` | Conversion to `quanteda` and `tidytext`. |
+| Government | `parl_government_on()` | Government and parties in office on a date. |
+| | `parl_add_government()` | Adds `govern` and `es_govern` to any table with `data` and `party_data`. |
+| Reference | `parl_mps()`, `parl_parties()`, `parl_governments()`, `parl_offices()`, ... | The reference tables of the dataset. |
+| Utilities | `parl_download()`, `parl_cache_dir()`, `parl_cache_clear()`, `parl_use_sample()` | Text download and cache. |
+| | `parl_metadata()`, `parl_party_colors()` | Key figures and party colours. |
+
+## Filters of `parl_speeches()`
+
+| Argument | Values | Default |
+|---|---|---|
+| `year` | 1932, 1933, 1934, 1936, 1937, 1938 | all |
+| `from`, `to` | dates | all |
+| `person` | full name, `id_persona` or a fragment of the name | all |
+| `party` | acronyms of `party_data` | all |
+| `session` | session identifiers | all |
+| `side` | `"all"`, `"government"`, `"opposition"` | `"all"` |
+| `office` | `TRUE`, `FALSE` or office names | no filter |
+| `spoken_only` | drop readings by the secretary and anonymous headings | `TRUE` |
+| `include_chair` | keep speeches made while chairing the session | `TRUE` |
+| `include_doubtful` | keep speeches flagged in `assignacio_dubtosa` | `TRUE` |
+| `text` | include the `text` column | `TRUE` |
+
+```{r}
+parl_speeches(side = "opposition", from = "1936-03-01", to = "1936-07-31",
+              include_chair = FALSE, text = FALSE)
+```
+
+## Variables
+
+Column names are in Catalan, as in the published dataset and its codebook.
+
+| Column | Description |
+|---|---|
+| `any`, `sessio`, `data`, `ordre`, `pagina` | Year, session, date, position in the session, PDF page. |
+| `orador_cru`, `orador`, `acotacio` | Speaker heading as written, normalised, and its annotation. |
+| `es_carrec`, `es_anonim` | Heading is an office / has no specific person. |
+| `nom_sencer`, `id_persona`, `es_diputat` | Identified person and whether an elected MP. |
+| `carrec` | Office in which the person speaks. |
+| `party` | Party of the 1932 ticket (never changes). |
+| `party_data` | **Party on the date of the speech**: use this one. |
+| `resolucio` | How the person was identified. |
+| `assignacio_dubtosa` | Attribution with a known limitation (304 speeches). |
+| `n_car`, `te_taula`, `text` | Length, presence of a table, text. |
+| `paraules`, `mes` | *Added by the package*: words and month. |
+| `govern`, `es_govern` | *Added*: government in office and whether `party_data` was in it. |
+| `circumscripcio` | *Added*: electoral district of MPs. |
+
+## Reference tables
+
+```{r}
+parl_governments()[, c("govern", "data_inici", "data_fi", "partits")]
+```
+
+| Function | Content |
+|---|---|
+| `parl_mps()` | The 83 MPs elected in 1932, with district and heading forms. |
+| `parl_parties()` | Party acronyms, names and notes. |
+| `parl_parties_by_year()` | MPs and government status per year and party. |
+| `parl_governments()` | Governments of the Generalitat and their parties. |
+| `parl_offices()` | Holders of the offices that speak in the *Diari*. |
+| `parl_party_changes()` | Dated party changes (PNRE, PSUC). |
+| `parl_chairs()` | Who chairs each session, from which speech. |
+| `parl_aliases()` | Headings resolved by hand (spellings, homonyms, OCR errors). |
+| `parl_review_cases()` | Doubtful cases and the decisions taken. |
+
+## Party colours
+
+```{r}
+parl_party_colors()
+```

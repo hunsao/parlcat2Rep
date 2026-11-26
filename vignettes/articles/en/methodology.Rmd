@@ -1,0 +1,80 @@
+---
+title: "Methodology, sources and warnings"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(parlcat2Rep)
+```
+
+## How the corpus was built
+
+1. **Text.** The 260 PDF files of the *Diari de Sessions* (5,868 pages) were
+   transcribed with a vision-language OCR model (OvisOCR2) and known errors
+   were cleaned.
+2. **Speeches.** Each speaker heading opens a new speech. Headings may carry a
+   name ("El Sr. LLUHÍ:"), an office ("El Sr. CONSELLER DE CULTURA:") or be
+   anonymous ("Un Sr. DIPUTAT:").
+3. **Speaker.** Rules applied in order: anonymous headings get no person;
+   "El Sr. PRESIDENT:" is whoever chaired the session at that moment; readings
+   by the secretary get no person; offices are resolved to their holder on
+   that date; ambiguous surnames are resolved with the annotation of the
+   *Diari*; aliases cover period spellings, homonyms and OCR errors; the rest
+   are matched by surname (exactly or, for OCR errors, by similarity).
+4. **Party.** `party` is the 1932 ticket; `party_data` is the party on the date,
+   taking into account ERC → PNRE (10 October 1933, back to ERC in May 1936)
+   and USC → PSUC (31 July 1936).
+5. **Human review.** Every case where sources disagree or the assignment is
+   not direct was decided one by one (`parl_review_cases()`).
+
+## Sources
+
+In order of priority when they disagree:
+
+1. the *Diari de Sessions* itself;
+2. the *Resum de deliberacions 1932–1934*, official volume of the Parliament;
+3. the *Relació de diputats 1932–1938*, leaflet of the Parliament
+   (<https://www.parlament.cat/document/intrade/203240>);
+4. Wikipedia (in Catalan), mainly for 1936–1938.
+
+## Before counting
+
+These choices change the results. Make them explicitly.
+
+**Party on the date, not party of the ticket.** Use `party_data`. Lluhí,
+Selves, Casanelles, Tarradellas and Xirau appear as PNRE between October 1933
+and May 1936.
+
+**Chairing the session.** Speeches by "El Sr. PRESIDENT" are mostly procedure.
+They are a large share of the corpus:
+
+```{r}
+d <- parl_speeches(text = FALSE)
+round(100 * mean(d$resolucio == "presidencia_sessio"), 1)
+```
+
+Use `include_chair = FALSE` for analyses of what people say.
+
+**Readings by the secretary and anonymous headings.** They are excluded by
+default (`spoken_only = TRUE`). Readings are documents read aloud, not speeches
+of the secretary; anonymous headings have no person.
+
+**Doubtful attributions.** `assignacio_dubtosa` flags 304 speeches: 201
+readings by the secretary, 102 anonymous speeches of "la Majoria" (a coalition
+led by ERC, assigned to ERC) and one unresolved heading. Use
+`include_doubtful = FALSE` to leave them out.
+
+**Government and opposition.** `es_govern` is `NA` before the first statutory
+government (19 December 1932), during the suspension and when the speech has
+no party.
+
+```{r}
+table(d$es_govern, useNA = "ifany")
+```
+
+**Uneven coverage.** 1933 has far more speeches than any other year, and there
+are almost no sessions in 1937 and 1938. Use rates (`parl_trend()`) rather
+than raw counts when comparing periods.
+
+**OCR.** The text comes from OCR. Searches ignore accents and case by default,
+but period spellings (e.g. *Tarradelles*) and residual OCR errors remain.

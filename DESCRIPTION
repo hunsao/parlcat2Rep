@@ -14,6 +14,8 @@ Description: Programmatic access to 'Voices of the Republic', the corpus of
     text search, keyword-in-context and trend utilities, and conversion to
     'quanteda' and 'tidytext' objects.
 License: MIT + file LICENSE
+URL: https://hunsao.github.io/parlcat2Rep/, https://github.com/hunsao/parlcat2Rep
+BugReports: https://github.com/hunsao/parlcat2Rep/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
@@ -32,5 +34,8 @@ Suggests:
     quanteda,
     testthat (>= 3.0.0),
     tidytext,
-    withr
+    withr,
+    knitr,
+    rmarkdown
 Config/testthat/edition: 3
+Config/Needs/website: pkgdown

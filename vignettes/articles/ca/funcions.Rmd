@@ -1,0 +1,91 @@
+---
+title: "Guia de funcions i dades"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(parlcat2Rep)
+parl_download(quiet = TRUE)
+```
+
+## Funcions
+
+| Grup | Funció | Què fa |
+|---|---|---|
+| Intervencions | `parl_speeches()` | Una fila per intervenció, amb filtres. |
+| | `parl_sessions()` | Una fila per sessió: data, intervencions, paraules, presidència. |
+| | `parl_persons()` | Una fila per orador, amb recomptes amb i sense presidència. |
+| Text | `parl_search()` | Intervencions que contenen una paraula, una frase o una expressió regular. |
+| | `parl_kwic()` | Cada aparició amb el seu context. |
+| | `parl_trend()`, `parl_plot_trend()` | Aparicions per milió de paraules per mes o any, per partit o per govern i oposició. |
+| | `parl_as_corpus()`, `parl_tidy()` | Conversió a `quanteda` i `tidytext`. |
+| Govern | `parl_government_on()` | Govern i partits en una data. |
+| | `parl_add_government()` | Afegeix `govern` i `es_govern` a qualsevol taula amb `data` i `party_data`. |
+| Referència | `parl_mps()`, `parl_parties()`, `parl_governments()`, `parl_offices()`… | Les taules de referència del dataset. |
+| Utilitats | `parl_download()`, `parl_cache_dir()`, `parl_cache_clear()`, `parl_use_sample()` | Descàrrega i memòria cau del text. |
+| | `parl_metadata()`, `parl_party_colors()` | Xifres clau i colors de partit. |
+
+## Filtres de `parl_speeches()`
+
+| Argument | Valors | Per defecte |
+|---|---|---|
+| `year` | 1932, 1933, 1934, 1936, 1937, 1938 | tots |
+| `from`, `to` | dates | tot el període |
+| `person` | nom complet, `id_persona` o un fragment del nom | totes |
+| `party` | sigles de `party_data` | tots |
+| `session` | identificadors de sessió | totes |
+| `side` | `"all"`, `"government"`, `"opposition"` | `"all"` |
+| `office` | `TRUE`, `FALSE` o noms de càrrec | sense filtre |
+| `spoken_only` | treu les lectures del secretari i les capçaleres anònimes | `TRUE` |
+| `include_chair` | manté les intervencions fetes presidint la sessió | `TRUE` |
+| `include_doubtful` | manté les intervencions marcades a `assignacio_dubtosa` | `TRUE` |
+| `text` | inclou la columna `text` | `TRUE` |
+
+```{r}
+parl_speeches(side = "opposition", from = "1936-03-01", to = "1936-07-31",
+              include_chair = FALSE, text = FALSE)
+```
+
+## Variables
+
+Els noms de les columnes són en català, com al dataset publicat i al codebook.
+
+| Columna | Descripció |
+|---|---|
+| `any`, `sessio`, `data`, `ordre`, `pagina` | Any, sessió, data, posició dins la sessió, pàgina del PDF. |
+| `orador_cru`, `orador`, `acotacio` | Capçalera tal com és, normalitzada, i la seva acotació. |
+| `es_carrec`, `es_anonim` | La capçalera és un càrrec / no té cap persona concreta. |
+| `nom_sencer`, `id_persona`, `es_diputat` | Persona identificada i si és diputat elegit. |
+| `carrec` | Càrrec amb què parla. |
+| `party` | Partit de la candidatura del 1932 (no canvia mai). |
+| `party_data` | **Partit a la data de la intervenció**: és el que cal fer servir. |
+| `resolucio` | Com s'ha identificat la persona. |
+| `assignacio_dubtosa` | Atribució amb una limitació coneguda (304 intervencions). |
+| `n_car`, `te_taula`, `text` | Llargada, si porta una taula, text. |
+| `paraules`, `mes` | *Afegides pel paquet*: paraules i mes. |
+| `govern`, `es_govern` | *Afegides*: govern en aquella data i si `party_data` en formava part. |
+| `circumscripcio` | *Afegida*: circumscripció dels diputats. |
+
+## Taules de referència
+
+```{r}
+parl_governments()[, c("govern", "data_inici", "data_fi", "partits")]
+```
+
+| Funció | Contingut |
+|---|---|
+| `parl_mps()` | Els 83 diputats elegits el 1932, amb circumscripció i formes de capçalera. |
+| `parl_parties()` | Sigles, noms i notes dels partits. |
+| `parl_parties_by_year()` | Diputats i participació al govern per any i partit. |
+| `parl_governments()` | Governs de la Generalitat i els seus partits. |
+| `parl_offices()` | Titulars dels càrrecs que parlen al *Diari*. |
+| `parl_party_changes()` | Canvis de partit amb data (PNRE, PSUC). |
+| `parl_chairs()` | Qui presideix cada sessió i des de quina intervenció. |
+| `parl_aliases()` | Capçaleres resoltes a mà (grafies, homònims, errors d'OCR). |
+| `parl_review_cases()` | Casos dubtosos i decisions preses. |
+
+## Colors de partit
+
+```{r}
+parl_party_colors()
+```

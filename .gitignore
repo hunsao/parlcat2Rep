@@ -4,3 +4,4 @@
 data-raw/out/
 *.tar.gz
 parlcat2Rep.Rcheck/
+docs/

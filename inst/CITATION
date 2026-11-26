@@ -1,0 +1,28 @@
+citHeader("Draft citation (not final). To cite the dataset and the package, please use:")
+
+bibentry(
+  bibtype = "Misc",
+  title = "Voices of the Republic: A Speech Corpus of the Parliament of Catalonia (1932--1938)",
+  author = c(person("Toni", "Rodon"), person("David", "Carbonell")),
+  year = "2026",
+  note = "Version 1.0. VEARLYDEM Project, Universitat Pompeu Fabra. DOI pending.",
+  textVersion = paste(
+    "Rodon, Toni, and David Carbonell. 2026. Voices of the Republic: A Speech Corpus",
+    "of the Parliament of Catalonia (1932-1938). Version 1.0. VEARLYDEM Project,",
+    "Universitat Pompeu Fabra. DOI pending."
+  )
+)
+
+bibentry(
+  bibtype = "Manual",
+  title = "parlcat2Rep: Access the Speech Corpus of the Parliament of Catalonia (1932-1938)",
+  author = c(person("Toni", "Rodon"), person("David", "Carbonell")),
+  year = "2026",
+  note = "R package",
+  url = "https://github.com/hunsao/parlcat2Rep",
+  textVersion = paste(
+    "Rodon, Toni, and David Carbonell. 2026. parlcat2Rep: Access the Speech Corpus",
+    "of the Parliament of Catalonia (1932-1938). R package.",
+    "https://github.com/hunsao/parlcat2Rep"
+  )
+)
